@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: tucuenta
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: juan.hoyos
+Implementation-Vendor-Id: co.innside
+Build-Jdk: 1.8.0_171
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/tucuenta
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Innside
+
