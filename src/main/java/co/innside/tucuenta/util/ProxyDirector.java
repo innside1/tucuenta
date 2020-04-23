@@ -6,7 +6,7 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 
-import org.assertj.core.util.Strings;
+import com.google.common.base.Strings;
 import org.springframework.stereotype.Component;
 
 import lombok.NoArgsConstructor;
