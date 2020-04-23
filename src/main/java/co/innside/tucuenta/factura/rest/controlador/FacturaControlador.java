@@ -43,7 +43,7 @@ public class FacturaControlador {
 			this.utilController = utilController;
 		}
 		
-		@ApiOperation(value = "Enviar selfie a TOC", notes = "Enviar selfie a TOC", nickname = "enviarselfietoc", 
+		@ApiOperation(value = "Procesar factura", notes = "Procesar factura", nickname = "procesarfactura", 
 	    		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	    @ApiResponses({ @ApiResponse(code = 201, message = ApiMensajeHttp.API_HTTP_STATUS_200, response = Respuesta.class),
 	                    @ApiResponse(code = 502, message = ApiMensajeHttp.API_HTTP_STATUS_502, response = Respuesta.class),
