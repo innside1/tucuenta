@@ -54,11 +54,13 @@ public class FacturaServicioImpl implements FacturaServicio {
 		producto1.setCantidad(5);
 		producto1.setPrecio(12500.0);
 		producto1.setNombre("Jabon");
+		producto1.setFactura(factura);
 		
 		Producto producto2 = new Producto();
 		producto2.setCantidad(3);
 		producto2.setPrecio(7200.0);
 		producto2.setNombre("Papel Higienico");
+		producto2.setFactura(factura);
 		
 		productos.add(producto1);
 		productos.add(producto2);

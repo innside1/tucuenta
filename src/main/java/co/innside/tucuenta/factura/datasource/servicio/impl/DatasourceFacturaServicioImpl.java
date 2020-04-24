@@ -28,16 +28,13 @@ public class DatasourceFacturaServicioImpl implements DatasourceFacturaServicio 
 		this.productoRepositorio = productoRepositorio;
 	}
 
-
-
-
 	@Override
 	public void almacenarCompra(Factura factura) {
 		try {
 			comercioRepositorio.save(factura.getComercio());
 			clienteRepositorio.save(factura.getCliente());
-			productoRepositorio.saveAll(factura.getProductos());
 			facturaRepositorio.save(factura);
+			productoRepositorio.saveAll(factura.getProductos());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
