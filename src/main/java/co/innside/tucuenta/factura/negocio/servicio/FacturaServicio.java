@@ -1,4 +1,4 @@
-package co.innside.tucuenta.factura.servicio;
+package co.innside.tucuenta.factura.negocio.servicio;
 
 import org.springframework.web.multipart.MultipartFile;
 

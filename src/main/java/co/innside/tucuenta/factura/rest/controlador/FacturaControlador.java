@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import co.innside.tucuenta.constante.ApiMensajeHttp;
 import co.innside.tucuenta.excepcion.ComunicacionFallidaException;
-import co.innside.tucuenta.factura.servicio.FacturaServicio;
+import co.innside.tucuenta.factura.negocio.servicio.FacturaServicio;
 import co.innside.tucuenta.rest.respuesta.dto.Error;
 import co.innside.tucuenta.rest.respuesta.dto.Respuesta;
 import co.innside.tucuenta.util.UtilControlador;
