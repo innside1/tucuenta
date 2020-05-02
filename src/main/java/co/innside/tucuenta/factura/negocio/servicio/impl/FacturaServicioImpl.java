@@ -1,74 +1,95 @@
 package co.innside.tucuenta.factura.negocio.servicio.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.innside.tucuenta.datasource.modelo.Factura;
 import co.innside.tucuenta.factura.datasource.servicio.DatasourceFacturaServicio;
 import co.innside.tucuenta.factura.negocio.servicio.FacturaServicio;
-import co.innside.tucuenta.modelo.Cliente;
-import co.innside.tucuenta.modelo.Comercio;
-import co.innside.tucuenta.modelo.Factura;
-import co.innside.tucuenta.modelo.Producto;
+import co.innside.tucuenta.util.ocr.OcrUtilidad;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Capa de operaciones de negocio
  * @author juan.hoyos
  *
  */
+@Slf4j
 @Service
 public class FacturaServicioImpl implements FacturaServicio {
 	
 	private final DatasourceFacturaServicio datasourceFacturaServicio;
 	
-	public FacturaServicioImpl(DatasourceFacturaServicio datasourceFacturaServicio) {
+	private final OcrUtilidad ocrUtilidad;
+	
+	public FacturaServicioImpl(DatasourceFacturaServicio datasourceFacturaServicio, OcrUtilidad ocrUtilidad) {
 		super();
 		this.datasourceFacturaServicio = datasourceFacturaServicio;
+		this.ocrUtilidad = ocrUtilidad;
 	}
 
 	@Override
-	public String procesarFactura(MultipartFile file) {
-		Factura factura = new Factura();
+	public String procesarFactura(MultipartFile archivo) {
+             
+        List<Factura> facturas = datasourceFacturaServicio.leerArchivoCsv(archivo);
+        facturas.isEmpty();
+        
+
+        String urlArchivo = facturas.get(55).getUrl();
+        String[] rutaArchivo =  urlArchivo.split("/");
+        String nombreArchivo = rutaArchivo[rutaArchivo.length - 1];
+        
+        URL url = null;
+		try {
+			url = new URL(facturas.get(55).getUrl());
+		} catch (MalformedURLException e1) {
+			log.error(e1.getMessage());
+		}
 		
-		factura.setTotal(235.21);
-		factura.setFechaCompra(LocalDateTime.now());
-		factura.setUrl("http://localhost:8100/swagger-ui.html#/");
+		descargarArchivo(nombreArchivo, url);
+//		ocrUtilidad.lecturaAsprise(nombreArchivo);
+//		ocrUtilidad.lecturaTesseract(nombreArchivo);
+//		ocrUtilidad.lecturaGoogle(facturas.get(55).getUrl());	
+		ocrUtilidad.lecturaAmazon(nombreArchivo);
 		
-		Comercio comercio = new Comercio();
-		comercio.setBarrio("Los Libertadores");
-		comercio.setDireccion("Cr 65 N 12 - 65");
-		comercio.setNit("2354862-5");
-		comercio.setNombre("Abarrotes la 80");
-		comercio.setTelefono("3125474");
-		factura.setComercio(comercio);
-		
-		Cliente cliente = new Cliente();
-		cliente.setCorreo("jhoyos@innside.co");
-		factura.setCliente(cliente);
-		
-		List<Producto> productos = new ArrayList<>();
-		Producto producto1 = new Producto();
-		producto1.setCantidad(5);
-		producto1.setPrecio(12500.0);
-		producto1.setNombre("Jabon");
-		producto1.setFactura(factura);
-		
-		Producto producto2 = new Producto();
-		producto2.setCantidad(3);
-		producto2.setPrecio(7200.0);
-		producto2.setNombre("Papel Higienico");
-		producto2.setFactura(factura);
-		
-		productos.add(producto1);
-		productos.add(producto2);
-		
-		factura.setProductos(productos);
-		
-		datasourceFacturaServicio.almacenarCompra(factura);
 		return "";
+	}
+
+	/**
+	 * @param nombreArchivo
+	 * @param url
+	 * @throws IOException
+	 */
+	private void descargarArchivo(String nombreArchivo, URL url) {
+		try {
+				FileUtils.copyURLToFile(url, new File(nombreArchivo));
+			} catch (IOException e) {
+				log.error(e.getMessage());
+			}
+	}
+
+	/**
+	 * @param nombreArchivo
+	 * @param url
+	 */
+	private void descargarArchivoGrande(String nombreArchivo, URL url) {
+		try (FileOutputStream fileOutputStream = new FileOutputStream(nombreArchivo);
+        	 ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream())){
+			fileOutputStream.getChannel()
+			  .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
 	}
 
 }

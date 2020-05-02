@@ -17,4 +17,6 @@ public class ApiMensajeHttp {
 	public static final String RESPUESTA_TOC = "Respuesta servicio TOC: {}";
 	public static final String ERROR_TOC = "Error al ejecutar el servicio TOC: {}";
 	public static final String ERROR_CONEXION_TOC = "Error de conexion con TOC";
+	public static final String ERROR_TIMEOUT_TOC = "Timeout con TOC excedido: {}";
+	public static final String ERROR_TIMEOUT_TOC_HIT_COMPLETO = "Timeout de hit completo a TOC excedido: {}";
 }
