@@ -91,7 +91,7 @@ public class OcrUtilidad {
 	public String  lecturaGoogle(String urlImage) {
 		String resultado = this.cloudVisionTemplate
 				.extractTextFromImage(this.resourceLoader.getResource(urlImage));
-		log.info(resultado);
+		//log.info(resultado);
 		return resultado;
 	}
 	
@@ -102,18 +102,24 @@ public class OcrUtilidad {
 	 */
 	public String lecturaAmazon(String nombreArchivo) {
 		ByteBuffer imageBytes = null;
+		StringBuilder str = new StringBuilder(); 
 		try (InputStream inputStream = new FileInputStream(new File(nombreArchivo))) {
 		    imageBytes = ByteBuffer.wrap(IOUtils.toByteArray(inputStream));
 		} catch (IOException e) {
 			log.error(e.getMessage());
+			return "No fue posible abrir el archivo: " + e.getMessage();
 		}
-		DetectDocumentTextRequest request = new DetectDocumentTextRequest()
-		        .withDocument(new Document()
-		                .withBytes(imageBytes));
-		DetectDocumentTextResult result = amazonClient.detectDocumentText(request);
-		log.info(result.getDetectDocumentTextModelVersion());
-		result.getBlocks().parallelStream().forEach(elemento -> log.info(elemento.getText()));
-		return result.getDetectDocumentTextModelVersion();
+		try {
+			DetectDocumentTextRequest request = new DetectDocumentTextRequest()
+			        .withDocument(new Document()
+			                .withBytes(imageBytes));
+			DetectDocumentTextResult result = amazonClient.detectDocumentText(request);
+			result.getBlocks().parallelStream().forEach(elemento -> str.append(elemento.getText()).append(" "));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return "Error de lectura Amazon: " + e.getMessage();
+		}
+		return str.toString();
 	}
 
 }
