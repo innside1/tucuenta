@@ -9,6 +9,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,17 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.adwork.stive.constante.ApiMensajeHttp;
+import co.adwork.stive.constante.CodigoError;
 import co.adwork.stive.datasource.modelo.Cliente;
 import co.adwork.stive.datasource.modelo.Comercio;
 import co.adwork.stive.datasource.modelo.Factura;
 import co.adwork.stive.datasource.modelo.Producto;
+import co.adwork.stive.excepcion.InformacionNoEncontradaException;
 import co.adwork.stive.factura.datasource.servicio.DatasourceFacturaServicio;
 import co.adwork.stive.factura.negocio.servicio.FacturaServicio;
+import co.adwork.stive.factura.rest.dto.ConsultarFacturaRespuesta;
+import co.adwork.stive.factura.rest.dto.ConsultarFacturaSolicitud;
 import co.adwork.stive.util.ocr.OcrUtilidad;
 import lombok.extern.slf4j.Slf4j;
 
@@ -165,6 +171,17 @@ public class FacturaServicioImpl implements FacturaServicio {
 			log.error(e.getMessage());
 			log.error("Registro no almacenado. " + "id: " + objectoFactura.getIdCsv() + ", url: " + objectoFactura.getUrl());
 		}
+	}
+
+	@Override
+	public ConsultarFacturaRespuesta consultarFactura(ConsultarFacturaSolicitud consultarFacturaSolicitud) {
+		if(consultarFacturaSolicitud.getFactura() == 10)
+			throw new InformacionNoEncontradaException(CodigoError.FACTURA, ApiMensajeHttp.FACTURA);
+		return ConsultarFacturaRespuesta.builder()
+				.nit(consultarFacturaSolicitud.getNit())
+				.total(1000)
+				.fechaCompra(LocalDate.now())
+				.build();
 	}
 
 }

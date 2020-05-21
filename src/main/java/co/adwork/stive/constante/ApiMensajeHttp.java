@@ -19,4 +19,6 @@ public class ApiMensajeHttp {
 	public static final String HTTP_ERROR_CONEXION = "Error de conexion";
 	public static final String HTTP_ERROR_TIMEOUT = "Timeout excedido: {}";
 	public static final String HTTP_ERROR_TIMEOUT_HIT_COMPLETO = "Timeout de hit completo excedido: {}";
+	
+	public static final String FACTURA = "No existe una factura con ese numero";
 }

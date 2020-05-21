@@ -15,6 +15,8 @@ public class CodigoError {
     public static final Integer CODIGO_GENERAL_ESB_INFORMACION_NO_ENCONTRADA = 99030;
     public static final Integer CODIGO_GENERAL_JSON_MAL_FORMADO = 99050;
     public static final Integer CODIGO_GENERAL_ERROR_INTERNO_BACKEND = 99060;
+    
+    public static final Integer FACTURA = 1001;
 
     private CodigoError() {
     }
